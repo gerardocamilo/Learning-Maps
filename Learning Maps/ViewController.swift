@@ -83,9 +83,45 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         map.setRegion(region, animated: true)
         
+        var speed = userLocation.speed;
+        var latitude = userLocation.coordinate.latitude;
+        var longitude = userLocation.coordinate.longitude;
+
+        println("Speed: \(speed)");
+        println("Lat: " + latitude.description);
+        println("Lon: " + longitude.description);
+        
+        CLGeocoder().reverseGeocodeLocation(userLocation, completionHandler:
+        {(placemarks, error)-> Void in
+            if error != nil {
+                println("Error in geodecoder: " + "Supposed error message");
+                return;
+            }
+
+            if placemarks.count > 0 {
+                let pm = placemarks[0] as! CLPlacemark;
+                self.displayLocationInfo(pm);
+            } else {
+                println("No location available this time.");
+            }
+            
+        })
+        
     }
     
+    func displayLocationInfo(placemark: CLPlacemark){
+        var subThoroughfare = "";
+        
+        if (placemark.subThoroughfare != nil ){
+            subThoroughfare = placemark.subThoroughfare;
+        }
+        
+        var address = "\(subThoroughfare) \(placemark.thoroughfare) \(placemark.locality) \(placemark.subLocality)         \(placemark.administrativeArea) \(placemark.subAdministrativeArea)";
 
+
+        println("Address: " + address);
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

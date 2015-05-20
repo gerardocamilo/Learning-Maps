@@ -94,7 +94,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         CLGeocoder().reverseGeocodeLocation(userLocation, completionHandler:
         {(placemarks, error)-> Void in
             if error != nil {
-                println("Error in geodecoder: " + "Supposed error message");
+                println("Error in geodecoder: \(error)");
                 return;
             }
 
